@@ -16,9 +16,12 @@ class Player extends AABB{
    
     velocity.y += GRAVITY * dt;
    // velocity.x += GRAVITY * dt;
-    
+    if(numJumps < 2){
     if(Keyboard.onDown(Keyboard.SPACE)) {
-     velocity.y = -500; 
+     velocity.y = -500;
+     numJumps++;
+     //println(numJumps);
+    }
     }
     
     position.x += velocity.x * dt;
@@ -28,6 +31,15 @@ class Player extends AABB{
      position.y = height - 100 - halfH;
      velocity.y = 0;
      isGrounded = true;
+    }
+    
+    if(position.y < height - 100 - halfH){
+      isGrounded = false;
+    }
+    
+    if(isGrounded == true){
+      numJumps = 0;
+      //println("reset");
     }
     
     super.update();
