@@ -4,6 +4,8 @@ class Player extends AABB{
   boolean isGrounded = false;
   int numJumps = 2;
   
+  float friction = 0.95;
+  
   // MAKE DOUBLE JUMPS BY MONDAY //
   
   Player() {
@@ -14,6 +16,8 @@ class Player extends AABB{
   
   void update() {
    
+    calcAngleToMouse();
+    
     velocity.y += GRAVITY * dt;
    // velocity.x += GRAVITY * dt;
     if(numJumps < 2){
@@ -24,6 +28,19 @@ class Player extends AABB{
     }
     }
     
+    if(Keyboard.isDown(Keyboard.LEFT)) {
+      velocity.x = -300;
+    }
+    else if(Keyboard.isDown(Keyboard.RIGHT)) {
+      velocity.x = 300;
+    }
+    else {
+     // if(isGrounded)
+     //velocity.x = 0;
+    }
+    
+    velocity.x *= friction;    // Applys easing on player //
+    
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
     
@@ -31,6 +48,7 @@ class Player extends AABB{
      position.y = height - 100 - halfH;
      velocity.y = 0;
      isGrounded = true;
+     friction = 0.95;
     }
     
     if(position.y < height - 100 - halfH){
@@ -48,6 +66,10 @@ class Player extends AABB{
   void draw() {
    fill(#1AB4FF);
    rect(position.x -halfW, position.y - halfH, w, h);
+   fill(255);
+   float reticleX = position.x + 75 * cos(angleToMouse);
+   float reticleY = position.y + 75 * sin(angleToMouse);
+   ellipse(reticleX, reticleY, 5, 5);
   }
   
 }
