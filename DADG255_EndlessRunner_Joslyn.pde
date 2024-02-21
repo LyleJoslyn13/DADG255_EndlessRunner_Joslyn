@@ -8,6 +8,7 @@ final float GRAVITY = 981;
 
 Player player;
 ArrayList<Platform> platforms = new ArrayList();
+ArrayList<Particle> particles = new ArrayList();
 
 float platformSpawnCD = 2;
 
@@ -56,6 +57,13 @@ void draw() {
    if(p.isDead) platforms.remove(p);
  }
  
+ for(int i = 0; i < particles.size(); i++) {
+   Particle p = particles.get(i);
+   p.update();
+   
+   if(p.isDead) particles.remove(p);
+ }
+ 
   player.update();
   
   
@@ -67,6 +75,12 @@ void draw() {
    Platform p = platforms.get(i);
    p.draw();
   }
+  
+  for(int i = 0; i < particles.size(); i++) {
+   Particle p = particles.get(i);
+   p.draw();
+  }
+  
   player.draw();
 
 // Prep for next frame //

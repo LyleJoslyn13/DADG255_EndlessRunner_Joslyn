@@ -2,6 +2,10 @@ class Player extends AABB{
   
   float maxHealth = 100, currentHealth = maxHealth;
   boolean isGrounded = false;
+  boolean isGroundPound = false;
+  boolean isRumble = false;
+  float rumbleTime = 0.3;
+  float rumbleMultiplier = 4;
   int numJumps = 2;
   
   float friction = 0.95;
@@ -20,11 +24,34 @@ class Player extends AABB{
     
     velocity.y += GRAVITY * dt;
    // velocity.x += GRAVITY * dt;
+   
+   if(isGrounded == false) { // GROUND POUND FUNCTIONALITY //
+   
+     if(Keyboard.onDown(Keyboard.DOWN)) { 
+       isGroundPound = true;
+       velocity.y = 1500;
+     }
+   }
+   
+   if(isRumble) {
+    rumbleTime -= dt;
+    float randX = random(-1, 1) * rumbleMultiplier;
+    float randY = random(-1, 1) * rumbleMultiplier;
+    
+    translate(randX, randY);
+    
+    if(rumbleTime <=0) {
+      translate(0, 0 );
+      isRumble = false;
+      rumbleTime = 0.3;
+    }
+   }
+   
     if(numJumps < 2){
     if(Keyboard.onDown(Keyboard.SPACE)) {
      velocity.y = -500;
      numJumps++;
-     //println(numJumps);
+     isGrounded = false;
     }
     }
     
@@ -44,11 +71,19 @@ class Player extends AABB{
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
     
+    if(isGrounded) {
+     if(velocity.x > 50 || velocity.x < -50) {
+       SkidParticle s = new SkidParticle(random(position.x - halfW, position.x + halfW), position.y + halfH, velocity.x > 0 ? 1 : -1);
+       particles.add(s);
+     }
+    }
+    
     if(position.y >= height - 100 - halfH) {
      position.y = height - 100 - halfH;
      velocity.y = 0;
      isGrounded = true;
      friction = 0.95;
+     rumble();
     }
     
     if(position.y < height - 100 - halfH){
@@ -72,4 +107,21 @@ class Player extends AABB{
    ellipse(reticleX, reticleY, 5, 5);
   }
   
+  @Override void setBottomEdge(float Y) {
+      position.y = Y - halfH;
+      velocity.y = 0;
+      isGrounded = true;
+      rumble();
+      calcEdges();
+    }
+  
+  void rumble() {
+  if(isGroundPound) {
+       //Screen shake
+       isRumble = true;
+       //Apply Damage
+       //Spawn Particles
+       isGroundPound = false;
+     }
+  } 
 }
