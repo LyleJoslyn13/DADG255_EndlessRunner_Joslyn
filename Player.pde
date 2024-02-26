@@ -54,6 +54,11 @@ class Player extends AABB{
      isGrounded = false;
     }
     }
+     
+    if(Keyboard.onDown(Keyboard.Q)) {
+     Grenade g = new Grenade(position.x, position.y - halfH - 5, angleToMouse);
+     grenades.add(g);
+    }
     
     if(Keyboard.isDown(Keyboard.LEFT)) {
       velocity.x = -300;
@@ -78,7 +83,7 @@ class Player extends AABB{
      }
     }
     
-    if(position.y >= height - 100 - halfH) {
+    if(position.y >= height - 100 - halfH) {     // colision with ground //
      position.y = height - 100 - halfH;
      velocity.y = 0;
      isGrounded = true;

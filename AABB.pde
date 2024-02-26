@@ -4,7 +4,7 @@ class AABB {
   PVector velocity = new PVector();
   boolean isDead;
   float w, h;
-  float angleToMouse, angleToObject;
+  float angleToMouse, angleToObject, launchAngle;
   
    // AABB Properties
     float edgeL = 0;

@@ -9,8 +9,11 @@ final float GRAVITY = 981;
 Player player;
 ArrayList<Platform> platforms = new ArrayList();
 ArrayList<Particle> particles = new ArrayList();
+ArrayList<Grenade> grenades = new ArrayList();
+ArrayList<Enemy> enemies = new ArrayList();
 
 float platformSpawnCD = 2;
+float enemyspawnCD = 1;
 
 void setup() {
   size(800, 600);
@@ -23,6 +26,13 @@ void draw() {
   background(128);
  
  // SPAWN ALL OBJECTS UNDER THIS LINE //
+ 
+ enemySpawnCD -= dt;
+ if(EnemySpawnCD <= 0) {
+   Enemy e = new enemy(); 
+   enemies.add(e);
+   //ERROR GET CODE FROM VARUUN //
+ }
  
  platformSpawnCD -= dt;
  if(platformSpawnCD <= 0) {
@@ -64,6 +74,26 @@ void draw() {
    if(p.isDead) particles.remove(p);
  }
  
+ for(int i = 0; i < grenades.size(); i++) {
+   Grenade g = grenades.get(i);
+   g.update();
+   
+   for(int j = 0; j< platforms.size(); j++) {
+    Platform p = platforms.get(j);
+     if(g.checkCollision(p)) {
+      g.fixOverlap(p);
+      
+     }
+   }
+   
+   if(g.isDead) grenades.remove(g);
+ }
+ 
+ for(int i = 0; i < enemies.size(); i++) {
+   Enemy e = enemies.get(i);
+   e.update();
+ }
+ 
   player.update();
   
   
@@ -79,6 +109,16 @@ void draw() {
   for(int i = 0; i < particles.size(); i++) {
    Particle p = particles.get(i);
    p.draw();
+  }
+  
+  for(int i = 0; i < grenades.size(); i++) {
+   Grenade g = grenades.get(i);
+   g.draw();
+  }
+  
+  for(int i = 0; i < enemies.size(); i++) {
+   Enemy e = enemies.get(i);
+   e.draw();
   }
   
   player.draw();
