@@ -14,7 +14,10 @@ class HealthBar {
     w = 125;
   }
 
-  void update() {
+  void update(float currHealth) {
+    
+    currentHealth = currHealth;
+    
     position.x = target.position.x;
     position.y = target.position.y - target.halfH - h;
     

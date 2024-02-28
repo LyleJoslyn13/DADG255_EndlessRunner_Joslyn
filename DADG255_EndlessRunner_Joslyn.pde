@@ -11,13 +11,15 @@ ArrayList<Platform> platforms = new ArrayList();
 ArrayList<Particle> particles = new ArrayList();
 ArrayList<Grenade> grenades = new ArrayList();
 ArrayList<Enemy> enemies = new ArrayList();
+ArrayList<Floatie> floaties = new ArrayList();
 
 float platformSpawnCD = 2;
-float enemyspawnCD = 1;
+float enemySpawnCD = 1;
 
 void setup() {
   size(800, 600);
   noStroke();
+  createDefaultGame();
   player = new Player();
 }
 
@@ -28,9 +30,10 @@ void draw() {
  // SPAWN ALL OBJECTS UNDER THIS LINE //
  
  enemySpawnCD -= dt;
- if(EnemySpawnCD <= 0) {
-   Enemy e = new enemy(); 
+ if(enemySpawnCD <= 0) {
+   Enemy e = new Enemy(); 
    enemies.add(e);
+   enemySpawnCD = 2.5;
    //ERROR GET CODE FROM VARUUN //
  }
  
@@ -92,10 +95,18 @@ void draw() {
  for(int i = 0; i < enemies.size(); i++) {
    Enemy e = enemies.get(i);
    e.update();
+   
+   if(e.isDead) enemies.remove(e);
+ }
+ 
+ for(int i = 0; i < floaties.size(); i++) {
+   Floatie f = floaties.get(i);
+   f.update();
  }
  
   player.update();
   
+  //GameManager.grenadeExplosionRadius += 5;  
   
   // DRAW ALL OBJECTS UNDER THIS LINE //
   fill(#FFB56F);
@@ -119,6 +130,11 @@ void draw() {
   for(int i = 0; i < enemies.size(); i++) {
    Enemy e = enemies.get(i);
    e.draw();
+  }
+  
+  for(int i = 0; i < floaties.size(); i++) {
+   Floatie f = floaties.get(i);
+   f.draw();
   }
   
   player.draw();
@@ -152,4 +168,10 @@ void calcDeltaTime(){
   float currTime = millis();
   dt = (currTime - prevTime) / 1000.0;
   prevTime = currTime;
+}
+
+void createDefaultGame() {
+ GameManager.grenadeMinDamage = 20; 
+ GameManager.grenadeMaxDamage = 50; 
+ GameManager.grenadeExplosionRadius = 350; 
 }

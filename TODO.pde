@@ -1,8 +1,10 @@
-//make double jump work on platforms by checking collision with top edge.
+
 //fix platform collision by checking indivual edges
+//remove enemies when they go off screen.
+//comment code
 
 // TO DO LIST
-// -ENEMIES
+// -ENEMIES DONE
 // -MELEE SYSTEM
 // -2 POWERUPs
 //    -Shield??

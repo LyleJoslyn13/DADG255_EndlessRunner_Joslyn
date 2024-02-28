@@ -25,8 +25,7 @@ class Enemy extends AABB {
     
     calcDamage();
     
-    bar.currentHealth = currentHealth;
-    bar.update();
+    bar.update(currentHealth);
     
     if(currentHealth < 0) isDead = true;
     

@@ -3,6 +3,8 @@ class Grenade extends AABB {
   float fuseTime = 3;
   float bounceHeight = 300;
   float mappedAngle;
+  
+  float damage;
  
   Grenade(float xPos, float yPos, float angle) {
     position.x = xPos;
@@ -12,6 +14,9 @@ class Grenade extends AABB {
     velocity.x = 300;
     velocity.y = -300;
     setSize(15, 15);
+    
+    damage = random(GameManager.grenadeMinDamage, GameManager.grenadeMaxDamage);
+    
   }
   
   void update() {
@@ -26,7 +31,12 @@ class Grenade extends AABB {
     position.y += velocity.y * dt;
     
     if(fuseTime <= 0) {
-                              // EXPLOSION //
+       // EXPLOSION //
+       int numParticles = (int)random(10, 25);
+       for(int i = 0; i < numParticles; i++) {
+         ExplosionParticle p = new ExplosionParticle(position.x, position.y);
+         particles.add(p); 
+       }
        applyDamageToEnemies();                       
        isDead = true;
     }
@@ -71,8 +81,10 @@ class Grenade extends AABB {
   void applyDamageToEnemies() {
    for(int i = 0; i< enemies.size(); i++) {
     float dis = dist(position.x, position.y, enemies.get(i).position.x, enemies.get(i).position.y);
-    if(dis <= 200) {
-     enemies.get(i).damagePool += 50;
+    if(dis <= GameManager.grenadeExplosionRadius) {
+     enemies.get(i).damagePool += damage;
+     Floatie f = new Floatie(enemies.get(i).position.x, enemies.get(i).position.y, damage);
+     floaties.add(f);
     }
    }
   }
