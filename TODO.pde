@@ -6,8 +6,11 @@
 // TO DO LIST
 // -ENEMIES DONE
 // -MELEE SYSTEM
+//    -slash down
+//    -slash forward
 // -2 POWERUPs
 //    -Shield??
+//    -Freeze??
 // -SCORE SYSTEM
 //    -based on Time and Enemy kills
 //    -High Score system
